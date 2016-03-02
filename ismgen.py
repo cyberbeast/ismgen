@@ -1,4 +1,5 @@
 import pandas as pd 
+pd.set_option('display.expand_frame_repr', False)
 import numpy as np
 import pprint
 from collections import OrderedDict
@@ -31,13 +32,24 @@ def get_next_six():
 		prev = "ece"
 	return(ret)
 
+floor_list = [str(flr) + "0" for flr in range(2, 7)]
+room_list = []
+for floor in floor_list:
+	for i in range(7):
+		if i !=5:
+			room_list.append(floor + str(i))
+
 layout = OrderedDict()
-for i in range(7):
-	if i != 5:
-		layout["20" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
-		layout["30" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
-		layout["40" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
-		layout["50" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
-		layout["60" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
+
+for room in room_list:
+	layout[room] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
 
 pprint.pprint(layout, width=1)
+
+# layout_frames = []
+
+# df = pd.DataFrame.from_dict(layout["200"])
+
+# for class_num, column_num in layout.iteritems():
+# 	layout_frames.append(pd.DataFrame.from_dict(class_num, orient='index'))
+# pprint.pprint(layout)
