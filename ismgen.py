@@ -1,44 +1,43 @@
 import pandas as pd 
-
+import numpy as np
+import pprint
+from collections import OrderedDict
 cse = pd.read_csv('CSE.csv')
 ece = pd.read_csv('ECE.csv')
 
-a1 = cse['CSE 3/4']
-a2 = cse['CSE 5/6']
-a3 = cse['CSE 7/8']
+cse_list = cse['CSE 3/4'].tolist() + cse['CSE 5/6'].tolist() + cse['CSE 7/8'].tolist()
+ece_list = ece['ECE 3/4'].tolist() + ece['ECE 5/6'].tolist() + ece['ECE 7/8'].tolist()
 
-b1 = ece['ECE 3/4']
-b2 = ece['ECE 5/6']
-b3 = ece['ECE 7/8']
+col_count = 1
+count_cse= 0
+count_ece= 0
 
-max_size = max(len(a1.index), len(a2.index), len(a3.index))
-max_in_a_column = 6
-max_from_one_dept_in_a_class = 30
+prev = "ece"
 
-temp_pd_headers = []
-temp_pd_headers.append(cse.columns.values[0])
-temp_pd_headers.append(ece.columns.values[0])
-# print(temp_pd_headers)
-temp_pd = pd.DataFrame(index=range(max_from_one_dept_in_a_class), columns=temp_pd_headers)
-# print(temp_pd)
-
-
-for i in range(0, max_size, max_from_one_dept_in_a_class):
-	rows_list = []
-	temp_dict = {}
-	print("i value is {i}".format(**locals()))
-	if (i+6)<=max_size:
-		for j in range(i, i+6):
-			temp_pd.loc[i] = np.array()
-		temp_dict.update({str(temp_pd_headers[0]) : str(a1[i:i+max_from_one_dept_in_a_class])})
-		# print(a1[i:i+max_from_one_dept_in_a_class])
+def get_next_six():
+	global count_cse
+	global count_ece
+	global prev
+	ret = []
+	if prev is "ece":
+		start = count_cse
+		count_cse += 6
+		ret = cse_list[start:start+6]
+		prev = "cse"
 	else:
-		print(a1[i: i+max_from_one_dept_in_a_class-1])
-	rows_list.append(temp_dict)
-	print(rows_list)
-	# print(pd.DataFrame(rows_list))
-	print("STOP")
+		start = count_ece
+		count_ece += 6
+		ret = ece_list[start:start+6]
+		prev = "ece"
+	return(ret)
 
+layout = OrderedDict()
+for i in range(7):
+	if i != 5:
+		layout["20" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
+		layout["30" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
+		layout["40" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
+		layout["50" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
+		layout["60" + str(i)] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
 
-# print 
-# print(len(a1.index))
+pprint.pprint(layout, width=1)
