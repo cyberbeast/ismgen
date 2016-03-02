@@ -1,6 +1,6 @@
 import pandas as pd 
 pd.set_option('display.expand_frame_repr', False)
-import numpy as np
+import math
 import pprint
 from collections import OrderedDict
 cse = pd.read_csv('CSE.csv')
@@ -23,12 +23,16 @@ def get_next_six():
 	if prev is "ece":
 		start = count_cse
 		count_cse += 6
-		ret = cse_list[start:start+6]
+		ret = cse_list[start:start+7]
+		if not ret:
+			return([float('nan') for i in range(7)])
 		prev = "cse"
 	else:
 		start = count_ece
 		count_ece += 6
-		ret = ece_list[start:start+6]
+		ret = ece_list[start:start+7]
+		if not ret:
+			return([float('nan') for i in range(7)])
 		prev = "ece"
 	return(ret)
 
@@ -40,16 +44,11 @@ for floor in floor_list:
 			room_list.append(floor + str(i))
 
 layout = OrderedDict()
+layout_frames = []
 
 for room in room_list:
 	layout[room] = {col_num:get_next_six() for col_num in ["col" + str(num) for num in range(1,10)]}
-
-pprint.pprint(layout, width=1)
-
-# layout_frames = []
-
-# df = pd.DataFrame.from_dict(layout["200"])
-
-# for class_num, column_num in layout.iteritems():
-# 	layout_frames.append(pd.DataFrame.from_dict(class_num, orient='index'))
-# pprint.pprint(layout)
+	layout_frames.append(pd.DataFrame({k : pd.Series(v) for k, v in layout[room].items()}).fillna('----------'))
+	layout_frames[-1].index.name = str(room)
+	
+pprint.pprint(layout_frames)
