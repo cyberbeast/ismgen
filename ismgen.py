@@ -4,6 +4,7 @@ import math
 import pprint
 from collections import OrderedDict
 import sys, getopt
+import openpyxl
 
 def get_next_six():
 	global count_host
@@ -62,3 +63,11 @@ for room in room_list:
 	layout_frames[-1].index.name = str(room)
 	
 pprint.pprint(layout_frames)
+
+pprint.pprint(layout_frames[0].values.tolist())
+
+wb = openpyxl.load_workbook('generated.xlsx')
+wb.create_sheet("200")
+sheet = wb.get_sheet_by_name('200')
+sheet['B7'] = '1PE11CS200'
+
