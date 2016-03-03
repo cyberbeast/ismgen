@@ -85,6 +85,12 @@ for room in room_list:
 	new_sheet.merge_cells('B1:C1')
 
 	new_sheet.merge_cells('F3:H4')
+	new_sheet.page_setup.orientation = new_sheet.ORIENTATION_LANDSCAPE
+	new_sheet.page_setup.paperSize = new_sheet.PAPERSIZE_A4
+	new_sheet.page_setup.fitToPage
+	new_sheet.print_options.horizontalCentered = True
+	new_sheet.print_options.verticalCentered = True
+
 
 	for row in default_sheet.rows:
 		for cell in row:
