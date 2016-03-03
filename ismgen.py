@@ -82,12 +82,19 @@ for room in room_list:
 	
 	default_sheet = wb['Template']
 
+	for rownum in range(7, 13):
+		new_sheet.row_dimensions[rownum].height = 25
+
+	for colname in ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L']:
+		new_sheet.column_dimensions[colname].width = 18
+		
 	new_sheet.merge_cells('B1:C1')
 
 	new_sheet.merge_cells('F3:H4')
+	new_sheet.row_dimensions
+	new_sheet.sheet_properties.pageSetUpPr.fitToPage = True
 	new_sheet.page_setup.orientation = new_sheet.ORIENTATION_LANDSCAPE
 	new_sheet.page_setup.paperSize = new_sheet.PAPERSIZE_A4
-	new_sheet.page_setup.fitToPage
 	new_sheet.print_options.horizontalCentered = True
 	new_sheet.print_options.verticalCentered = True
 
