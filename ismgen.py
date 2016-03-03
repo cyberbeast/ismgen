@@ -3,38 +3,48 @@ pd.set_option('display.expand_frame_repr', False)
 import math
 import pprint
 from collections import OrderedDict
-cse = pd.read_csv('CSE.csv')
-ece = pd.read_csv('ECE.csv')
-
-cse_list = cse['CSE 3/4'].tolist() + cse['CSE 5/6'].tolist() + cse['CSE 7/8'].tolist()
-ece_list = ece['ECE 3/4'].tolist() + ece['ECE 5/6'].tolist() + ece['ECE 7/8'].tolist()
-
-col_count = 1
-count_cse= 0
-count_ece= 0
-
-prev = "ece"
+import sys, getopt
 
 def get_next_six():
-	global count_cse
-	global count_ece
+	global count_host
+	global count_guest
 	global prev
 	ret = []
-	if prev is "ece":
-		start = count_cse
-		count_cse += 6
-		ret = cse_list[start:start+7]
+	if prev is "guest":
+		start = count_host
+		count_host += 6
+		ret = host_list[start:start+7]
 		if not ret:
 			return([float('nan') for i in range(7)])
-		prev = "cse"
+		prev = "host"
 	else:
-		start = count_ece
-		count_ece += 6
-		ret = ece_list[start:start+7]
+		start = count_guest
+		count_guest += 6
+		ret = guest_list[start:start+7]
 		if not ret:
 			return([float('nan') for i in range(7)])
-		prev = "ece"
+		prev = "guest"
 	return(ret)
+
+try:
+	opts, args = getopt.getopt(sys.argv[1:],"h:g:", ["hostfile=","guestfile="])
+except getopt.GetoptError:
+	print('ismgen.py -h <hostfile> -g <guestfile>')
+	sys.exit(2)
+
+for opt, arg in opts:
+	if opt in ("-h", "--hostfile"):
+		host = pd.read_csv(arg)
+	elif opt in ("-g", "--guestfile"):
+		guest = pd.read_csv(arg)
+
+host_list = host['3/4'].tolist() + host['5/6'].tolist() + host['7/8'].tolist()
+guest_list = guest['3/4'].tolist() + guest['5/6'].tolist() + guest['7/8'].tolist()
+
+prev="guest"
+col_count = 1
+count_host= 0
+count_guest= 0
 
 floor_list = [str(flr) + "0" for flr in range(2, 7)]
 room_list = []
