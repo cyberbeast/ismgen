@@ -100,6 +100,10 @@ for room in room_list:
 	new_sheet.page_setup.paperSize = new_sheet.PAPERSIZE_A4
 	new_sheet.print_options.horizontalCentered = True
 	new_sheet.print_options.verticalCentered = True
+	new_sheet.header_footer.right_header.text = str(room)
+	new_sheet.header_footer.right_header.font_name = "Arial,Bold"
+	new_sheet.header_footer.right_header.font_size = 125
+	new_sheet.add_image(Image('logo_header.png'))
 
 
 	for row in default_sheet.rows:
@@ -126,6 +130,17 @@ for room in room_list:
 	sys.stdout.flush()
 
 wb.save("template.xlsx")
+
+# header_logo_done_list = []
+# workbook = xlsxwriter.Workbook("template.xlsx")
+# print("HERE")
+# for ws_in_wb in workbook.worksheets():
+# 	print(ws_in_wb.get_name())
+# 	# ws_in_wb.set_header('&L&G', {'image_left':'logo_header.png'})
+# 	# done_list.append(ws_in_wb.get_name())
+# 	# sys.stdout.write("Adding PESIT Logo to {header_logo_done_list}!".format(**locals()))
+# 	# sys.stdout.flush()
+# workbook.close()
 print("\nDone! :)")
 
 # print(layout_frames['200']['col1'].tolist())
