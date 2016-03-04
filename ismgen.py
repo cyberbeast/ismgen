@@ -1,3 +1,6 @@
+# STABLE BUILD
+# SIGNED: CYBERBEAST
+
 import pandas as pd 
 pd.set_option('display.expand_frame_repr', False)
 import math
@@ -87,7 +90,7 @@ for room in room_list:
 
 	for colname in ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L']:
 		new_sheet.column_dimensions[colname].width = 18
-		
+
 	new_sheet.merge_cells('B1:C1')
 
 	new_sheet.merge_cells('F3:H4')
