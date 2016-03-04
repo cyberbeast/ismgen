@@ -8,6 +8,7 @@ import pprint
 from collections import OrderedDict
 import sys, getopt
 import openpyxl
+from openpyxl.drawing.image import Image
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -100,10 +101,12 @@ for room in room_list:
 	new_sheet.page_setup.paperSize = new_sheet.PAPERSIZE_A4
 	new_sheet.print_options.horizontalCentered = True
 	new_sheet.print_options.verticalCentered = True
+	new_sheet.header_footer.setHeader(default_sheet.header_footer.getHeader())
+	new_sheet.header_footer.setFooter(default_sheet.header_footer.getFooter())
 	new_sheet.header_footer.right_header.text = str(room)
 	new_sheet.header_footer.right_header.font_name = "Arial,Bold"
 	new_sheet.header_footer.right_header.font_size = 125
-	new_sheet.add_image(Image('logo_header.png'))
+	# new_sheet.add_image(Image('logo_header.png'))
 
 
 	for row in default_sheet.rows:
